@@ -13,30 +13,36 @@ function Entry() {
     option4: 'https://cdn.whatfix.com/prod/ebb8b6c9-c4b3-4838-b118-a39c7edc7e88/initiator/initiator.nocache.js'
   }), []);
 
-  useEffect(() => {
-    // Check if we're not on entry page and Whatfix script is not present
-    if (location.pathname !== '/') {
-      const scripts = document.getElementsByTagName('script');
-      const hasWhatfixScript = Array.from(scripts).some(script => 
-        script.src && script.src.includes('whatfix')
-      );
+    useEffect(() => {
+        // Store the attempted path if not on entry page
+        if (location.pathname !== '/') {
+          sessionStorage.setItem('redirectPath', location.pathname);
+          const scripts = document.getElementsByTagName('script');
+          const hasWhatfixScript = Array.from(scripts).some(script => 
+            script.src && script.src.includes('whatfix')
+          );
+    
+          if (!hasWhatfixScript) {
+            navigate('/');
+          }
+        }
+      }, [location, navigate]);
+    
+      useEffect(() => {
+        if (selectedScript) {
+          const script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.async = true;
+          script.src = scriptOptions[selectedScript];
+          document.head.appendChild(script);
+          
+          // Navigate to stored path or default to home
+          const redirectPath = sessionStorage.getItem('redirectPath') || '/home';
+          sessionStorage.removeItem('redirectPath');
+          navigate(redirectPath);
+        }
+      }, [selectedScript, scriptOptions, navigate]);
 
-      if (!hasWhatfixScript) {
-        navigate('/');
-      }
-    }
-  }, [location, navigate]);
-
-  useEffect(() => {
-    if (selectedScript) {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = scriptOptions[selectedScript];
-      document.head.appendChild(script);
-      navigate('/home');
-    }
-  }, [selectedScript, scriptOptions, navigate]);
 
   return (
     <div style={styles.container}>
