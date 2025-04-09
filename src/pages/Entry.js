@@ -1,16 +1,31 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Entry() {
   const [selectedScript, setSelectedScript] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const scriptOptions = useMemo(() => ({
     option1: '',
     option2: 'https://eucdn.whatfix.com/prod/a6b8aa9c-6196-4580-b859-cedb3075b240/initiator/initiator.nocache.js',
-    option3: 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js',
+    option3: 'https://eucdn.whatfix.com/prod/a6b8aa9c-6196-4580-b859-cedb3075b240/initiator/initiator.nocache.js',
     option4: 'https://cdn.whatfix.com/prod/ebb8b6c9-c4b3-4838-b118-a39c7edc7e88/initiator/initiator.nocache.js'
   }), []);
+
+  useEffect(() => {
+    // Check if we're not on entry page and Whatfix script is not present
+    if (location.pathname !== '/') {
+      const scripts = document.getElementsByTagName('script');
+      const hasWhatfixScript = Array.from(scripts).some(script => 
+        script.src && script.src.includes('whatfix')
+      );
+
+      if (!hasWhatfixScript) {
+        navigate('/');
+      }
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     if (selectedScript) {

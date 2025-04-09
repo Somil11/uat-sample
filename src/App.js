@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import ScriptProtectedRoute from './components/ScriptProtectedRoute';
 import Navbar from './components/Navbar';
 import Entry from './pages/Entry';
 import Home from './pages/Home';
@@ -12,18 +13,22 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Entry />} />
-        <Route path="/*" element={
-          <>
-            <Navbar />
-            <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<Navigate to="/home" />} />
-            </Routes>
-          </>
-        } />
+        <Route element={
+          <ScriptProtectedRoute>
+            <>
+              <Navbar />
+              <Routes>
+                <Route path="/home" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/contact" element={<Contact />} />
+              </Routes>
+            </>
+          </ScriptProtectedRoute>
+        }>
+          <Route index element={<Navigate to="/home" replace />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
