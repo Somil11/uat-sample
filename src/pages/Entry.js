@@ -1,10 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Entry() {
   const [selectedScript, setSelectedScript] = useState('');
   const navigate = useNavigate();
-  const location = useLocation();
 
   const scriptOptions = useMemo(() => ({
     option1: '',
@@ -13,36 +12,18 @@ function Entry() {
     option4: 'https://cdn.whatfix.com/prod/ebb8b6c9-c4b3-4838-b118-a39c7edc7e88/initiator/initiator.nocache.js'
   }), []);
 
-    useEffect(() => {
-        // Store the attempted path if not on entry page
-        if (location.pathname !== '/') {
-          sessionStorage.setItem('redirectPath', location.pathname);
-          const scripts = document.getElementsByTagName('script');
-          const hasWhatfixScript = Array.from(scripts).some(script => 
-            script.src && script.src.includes('whatfix')
-          );
-    
-          if (!hasWhatfixScript) {
-            navigate('/');
-          }
-        }
-      }, [location, navigate]);
-    
-      useEffect(() => {
-        if (selectedScript) {
-          const script = document.createElement('script');
-          script.type = 'text/javascript';
-          script.async = true;
-          script.src = scriptOptions[selectedScript];
-          document.head.appendChild(script);
-          
-          // Navigate to stored path or default to home
-          const redirectPath = sessionStorage.getItem('redirectPath') || '/home';
-          sessionStorage.removeItem('redirectPath');
-          navigate(redirectPath);
-        }
-      }, [selectedScript, scriptOptions, navigate]);
-
+  const handleScriptSelect = (e) => {
+    const selected = e.target.value;
+    if (selected) {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = scriptOptions[selected];
+      document.head.appendChild(script);
+      setSelectedScript(selected);
+      navigate('/home');
+    }
+  };
 
   return (
     <div style={styles.container}>
@@ -50,7 +31,7 @@ function Entry() {
       <p style={styles.subtitle}>Please select a script to continue</p>
       <select 
         value={selectedScript} 
-        onChange={(e) => setSelectedScript(e.target.value)}
+        onChange={handleScriptSelect}
         style={styles.dropdown}
       >
         <option value="">Select Script</option>
