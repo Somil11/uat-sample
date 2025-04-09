@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   const [selectedScript, setSelectedScript] = useState('');
 
+  // Move scriptOptions outside component or use useMemo
   const scriptOptions = {
     option1: '',
     option2: 'https://eucdn.whatfix.com/prod/a6b8aa9c-6196-4580-b859-cedb3075b240/initiator/initiator.nocache.js',
@@ -12,19 +13,21 @@ function Navbar() {
   };
 
   useEffect(() => {
+    let scriptElement = null;
     if (selectedScript) {
-      const script = document.createElement('script');
-        script.language = 'javascript';
-        script.async = true;
-        script.type = 'text/javascript';
-      script.src = scriptOptions[selectedScript];
-      document.head.appendChild(script);
+      scriptElement = document.createElement('script');
+      scriptElement.type = 'text/javascript';
+      scriptElement.async = true;
+      scriptElement.src = scriptOptions[selectedScript];
+      document.head.appendChild(scriptElement);
 
       return () => {
-        document.head.removeChild(script);
+        if (scriptElement) {
+          document.head.removeChild(scriptElement);
+        }
       };
     }
-  }, [selectedScript]);
+  }, [selectedScript, scriptOptions]); // Added scriptOptions to dependency array
 
   return (
     <nav style={styles.nav}>
