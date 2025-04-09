@@ -21,6 +21,9 @@ function Entry() {
       script.src = scriptOptions[selected];
       document.head.appendChild(script);
       setSelectedScript(selected);
+      // Store script info in localStorage
+      localStorage.setItem('scriptLoaded', 'true');
+      localStorage.setItem('scriptUrl', scriptOptions[selected]);
       navigate('/home');
     }
   };
