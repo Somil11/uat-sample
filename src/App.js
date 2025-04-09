@@ -13,21 +13,38 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Entry />} />
-        <Route element={
+        <Route path="/home" element={
           <ScriptProtectedRoute>
             <>
               <Navbar />
-              <Routes>
-                <Route path="/home" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/services" element={<Services />} />
-                <Route path="/contact" element={<Contact />} />
-              </Routes>
+              <Home />
             </>
           </ScriptProtectedRoute>
-        }>
-          <Route index element={<Navigate to="/home" replace />} />
-        </Route>
+        } />
+        <Route path="/about" element={
+          <ScriptProtectedRoute>
+            <>
+              <Navbar />
+              <About />
+            </>
+          </ScriptProtectedRoute>
+        } />
+        <Route path="/services" element={
+          <ScriptProtectedRoute>
+            <>
+              <Navbar />
+              <Services />
+            </>
+          </ScriptProtectedRoute>
+        } />
+        <Route path="/contact" element={
+          <ScriptProtectedRoute>
+            <>
+              <Navbar />
+              <Contact />
+            </>
+          </ScriptProtectedRoute>
+        } />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
