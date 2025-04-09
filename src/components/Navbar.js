@@ -1,33 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [selectedScript, setSelectedScript] = useState('');
 
-  // Move scriptOptions outside component or use useMemo
-  const scriptOptions = {
+  const scriptOptions = useMemo(() => ({
     option1: '',
     option2: 'https://eucdn.whatfix.com/prod/a6b8aa9c-6196-4580-b859-cedb3075b240/initiator/initiator.nocache.js',
     option3: 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js',
     option4: 'https://cdn.jsdelivr.net/npm/chart.js'
-  };
+  }), []); // Empty dependency array as these URLs don't change
 
   useEffect(() => {
-    let scriptElement = null;
     if (selectedScript) {
-      scriptElement = document.createElement('script');
-      scriptElement.type = 'text/javascript';
-      scriptElement.async = true;
-      scriptElement.src = scriptOptions[selectedScript];
-      document.head.appendChild(scriptElement);
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.async = true;
+      script.src = scriptOptions[selectedScript];
+      document.head.appendChild(script);
 
       return () => {
-        if (scriptElement) {
-          document.head.removeChild(scriptElement);
-        }
+        document.head.removeChild(script);
       };
     }
-  }, [selectedScript, scriptOptions]); // Added scriptOptions to dependency array
+  }, [selectedScript, scriptOptions]);
 
   return (
     <nav style={styles.nav}>
