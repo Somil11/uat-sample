@@ -9,7 +9,7 @@ function Entry() {
     option1: '',
     option2: 'https://eucdn.whatfix.com/prod/a6b8aa9c-6196-4580-b859-cedb3075b240/initiator/initiator.nocache.js',
     option3: 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js',
-    option4: 'https://cdn.jsdelivr.net/npm/chart.js'
+    option4: 'https://cdn.whatfix.com/prod/ebb8b6c9-c4b3-4838-b118-a39c7edc7e88/initiator/initiator.nocache.js'
   }), []);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function Entry() {
         style={styles.dropdown}
       >
         <option value="">Select Script</option>
-        <option value="option1">EU-Extension</option>
+        <option value="option1">Extension</option>
         <option value="option2">EU-JS-1</option>
         <option value="option3">EU-JS-2</option>
         <option value="option4">US-JS</option>
