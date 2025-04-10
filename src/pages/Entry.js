@@ -6,7 +6,7 @@ function Entry() {
   const navigate = useNavigate();
 
   const scriptOptions = useMemo(() => ({
-    option1: '',
+    option1: 'whatfix',
     option2: 'https://eucdn.whatfix.com/prod/a6b8aa9c-6196-4580-b859-cedb3075b240/initiator/initiator.nocache.js',
     option3: 'https://eucdn.whatfix.com/prod/a6b8aa9c-6196-4580-b859-cedb3075b240/initiator/initiator.nocache.js',
     option4: 'https://cdn.whatfix.com/prod/ebb8b6c9-c4b3-4838-b118-a39c7edc7e88/initiator/initiator.nocache.js'
